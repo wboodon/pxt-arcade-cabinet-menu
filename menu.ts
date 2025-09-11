@@ -156,7 +156,7 @@ function gameMenu() {
         if (control.millis() - lastTick > DEMO_IDLE_TIME) {
             // nothing has happened for a while
             // start a random game
-            select();
+            // select();
         }
     }, DEMO_IDLE_TIME >> 2)
 

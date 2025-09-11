@@ -19,5 +19,6 @@
         "**/yotta_modules": true,
         "**/yotta_targets": true,
         "**/pxt_modules": true
-    }
+    },
+    "makefile.configureOnOpen": false
 }
