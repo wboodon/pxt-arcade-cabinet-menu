@@ -1,4 +1,5 @@
 function gameMenu() {
+    //control.panic(control.PXT_PANIC.UNHANDLED_EXCEPTION);
     let admin = false;
     let menuelts: string[] = [];
     let cursor = 0;
@@ -8,17 +9,30 @@ function gameMenu() {
     const DEMO_IDLE_TIME = 5 * 60 * 1000;
     let lastTick = 0;
     const logo = img`
-        . . 3 . . . 3 3 3 . . . 3 . . . 1 . . . 1 . 1 1 1 . 1 . 1 . 1 1 1 . 1 1 1 . 1 1 1 . 1 1 . . 1 1 1
-        . 3 . . . . . 3 . . . . . 3 . . 1 1 . 1 1 . 1 . 1 . 1 1 . . 1 . . . 1 . . . 1 . 1 . 1 . 1 . 1 . .
-        . 3 . . 3 3 3 3 3 3 3 . . 3 . . 1 . 1 . 1 . 1 1 1 . 1 . 1 . 1 1 . . 1 . . . 1 . 1 . 1 . 1 . 1 1 .
-        . 3 . . 3 3 3 3 3 3 3 . . 3 . . 1 . . . 1 . 1 . 1 . 1 . 1 . 1 1 1 . 1 1 1 . 1 1 1 . 1 1 . . 1 1 1
-        . 3 . . 3 3 3 3 3 . 3 . . 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-        3 . . . 3 3 3 3 3 . . . . . 3 . . 1 1 1 . . 1 1 1 1 . . . 1 1 1 . . . 1 1 1 . . 1 1 1 . . 1 1 1 1
-        . 3 . . 3 3 3 3 3 . 3 . . 3 . . 1 . . . 1 . 1 . . . 1 . 1 . . . 1 . 1 . . . 1 . 1 . . 1 . 1 . . .
-        . 3 . . 3 3 3 3 3 3 3 . . 3 . . 1 . . . 1 . 1 . . . 1 . 1 . . . . . 1 . . . 1 . 1 . . 1 . 1 . . .
-        . 3 . . 3 3 3 3 3 3 3 . . 3 . . 1 1 1 1 1 . 1 1 1 1 . . 1 . . . . . 1 1 1 1 1 . 1 . . 1 . 1 1 1 .
-        . 3 . . . . . . . . . . . 3 . . 1 . . . 1 . 1 . . . 1 . 1 . . . 1 . 1 . . . 1 . 1 . . 1 . 1 . . .
-        . . 3 . . . . . . . . . 3 . . . 1 . . . 1 . 1 . . . 1 . . 1 1 1 . . 1 . . . 1 . 1 1 1 . . 1 1 1 1
+        ..9...999...9...1...1.111.1.1.111.111.111.11..111
+        .9.....9.....9..11.11.1.1.11..1...1...1.1.1.1.1..
+        .9..9999999..9..1.1.1.111.1.1.11..1...1.1.1.1.11.
+        .9..9999999..9..1...1.1.1.1.1.111.111.111.11..111
+        .9..99999.9..9...................................
+        9...99999.....9..111..1111...111...111..111..1111
+        .9..99999.9..9..1...1.1...1.1...1.1...1.1..1.1...
+        .9..9999999..9..1...1.1...1.1.....1...1.1..1.1...
+        .9..9999999..9..11111.1111..1.....11111.1..1.111.
+        .9...........9..1...1.1...1.1...1.1...1.1..1.1...
+        ..9.........9...1...1.1...1..111..1...1.111..1111
+    `
+    const logoCN = img`
+        ....ffffffff....111.111.11..111.fff.f.fff.fff.fff.fff.
+        ...ffffffffff...1.1.1.1.1.1.1...f.f.f.f.f..f..f.f.f...
+        ..ffffffffffff..1...1.1.1.1.11..f.f.f.f.f..f..fff.fff.
+        f.ffbbbbddddff..1.1.1.1.1.1.1...f.f.f.f.f..f..f.f...f.
+        fffbffbbddffdf..111.111.11..111.f.f.f.f.f.ff..f.f.fff.
+        .ffbbffbdffddf........................................
+        ffffbbbbddddff.fff.f..f..f.ff.fff.fff.fff.11.1.111.1.1
+        f.ffffffffffff.f...f..f..f.f..f.f..f...f..1..1..1..1.1
+        ..ffffffffffff.ff..f..f..f.f..f.f..f...f..1..1..1..111
+        ...ffffffffff..f...f..f..f.f..f.f..f...f..1..1..1...1.
+        ....ffffffff...fff.ff.ff.f.ff.fff..f...f..11.1..1...1.
     `
     const tick = () => { lastTick = control.millis() }
     const move = (dx: number) => {
@@ -110,15 +124,16 @@ function gameMenu() {
         })
 
         game.onPaint(function () {
-            screen.fillRect(0, 0, 160, 20, 12)
+            screen.fillRect(0, 0, 160, 20, 8)
             screen.drawTransparentImage(logo, 4, 4)
+            screen.drawTransparentImage(logoCN, screen.width - 54 - 4, 4)
             for (let i = 0; i < 9; ++i) {
                 let e = menuelts[i + offset] || "";
                 e = e.split('_').join(' ')
                 e = e.split('-').join(' ')
                 let y = 25 + i * 11
                 if (i + offset == cursor) {
-                    screen.fillRect(0, y - 2, 160, 11, 5)
+                    screen.fillRect(0, y - 2, 160, 11, 9)
                     screen.print(e, 10, y, 15)
                 }
                 else
@@ -133,6 +148,7 @@ function gameMenu() {
         let lg = swarm.swarmInSprite(logo, 100, 0.5, () => {
             phase = 1
         });
+        //let lg2 = swarm.swarmInSprite(logoCN, 100)
 
         game.onUpdate(function () {
             if (!phase)
@@ -205,7 +221,7 @@ function gameMenu() {
         `)
 
 
-    storyboard.microsoftBootSequence.register()
+    //storyboard.microsoftBootSequence.register()
     menuBootSequence.register();
     storyboard.registerScene("menu", showMenu)
     storyboard.start()
